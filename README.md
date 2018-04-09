@@ -1,2 +1,3 @@
-# proxy-shim
-es6 proxy shim
+# [proxy-shim](https://github.com/mohwa/proxy-shim)
+
+**proxy-shim**

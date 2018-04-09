@@ -1,0 +1,47 @@
+{
+  "name": "proxy-shim",
+  "version": "0.0.0",
+  "description": "proxy-shim",
+  "keywords": [
+    "es6",
+    "es2015",
+    "proxy",
+    "shim",
+    "polyfill",
+    "defineProperty"
+  ],
+  "homepage": "https://github.com/mohwa/proxy-shim",
+  "author": {
+    "name": "mohwa",
+    "email": "yanione2@gmail.com"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "babel-core": "6.26.0",
+    "babel-loader": "7.1.2",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "babel-preset-es2015": "6.24.1",
+    "bundle-loader": "0.5.5",
+    "clean-webpack-plugin": "^0.1.18",
+    "copy-webpack-plugin": "^4.5.0",
+    "glob": "7.0.3",
+    "jsdoc": "latest",
+    "uglifyjs-webpack-plugin": "^1.2.2",
+    "webpack": "^3.10.0",
+    "webpack-config": "7.5.0"
+  },
+  "devDependencies": {
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^2.30.1",
+    "webpack-dev-server": "^2.11.1"
+  },
+  "scripts": {
+    "start": "./node_modules/.bin/webpack-dev-server --env=dev --config ./config/webpack.config.js",
+    "build": "./node_modules/.bin/webpack --env=prod --config ./config/webpack.config.js",
+    "postinstall": "npm run build"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=8.x"
+  }
+}
