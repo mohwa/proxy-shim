@@ -30,7 +30,7 @@ const config = {
     },
     devServer: {
         contentBase: buildPath,
-        host: '192.168.44.137',
+        host: 'localhost',
         port: '8088',
         proxy: {},
         open: true

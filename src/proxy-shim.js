@@ -115,6 +115,10 @@ window.Proxy = (() => {
             proxy[k] = v;
         });
 
+        // target, proxy 객체 속성을 추가할 수 없도록 프리징시킨다.
+        Object.seal(target);
+        Object.seal(proxy);
+
         return proxy;
     }
 
@@ -141,7 +145,7 @@ window.Proxy = (() => {
     };
 
 
-    return window.Proxy || Proxy;
+    return !window.Proxy || Proxy;
 
 })();
 
