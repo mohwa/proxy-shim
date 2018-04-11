@@ -15,7 +15,7 @@ const envConfig = environment.get('config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const JSDocPlugin = require('./plugins/jsDocPlugin');
+//const JSDocPlugin = require('./plugins/jsDocPlugin');
 
 const rootPath = path.join(__dirname, '..');
 
@@ -24,15 +24,13 @@ const buildPath = path.join(rootPath, 'dist');
 
 const entry = path.join(srcPath, 'proxy-shim');
 
-console.log(entry);
-
 const config = {
     entry: {
         "proxy-shim": entry
     },
     devServer: {
         contentBase: buildPath,
-        host: 'localhost',
+        host: '192.168.44.137',
         port: '8088',
         proxy: {},
         open: true
@@ -40,12 +38,12 @@ const config = {
     plugins: [
         new HtmlWebpackPlugin({
             hash: true,
+            inject: 'head',
             template: path.join(srcPath, 'index.html')
         }),
         new CopyWebpackPlugin([
             {context: srcPath, from: `${path.join(srcPath, 'test/**/*')}`, ignore: ['*.js']}
-        ]),
-        new JSDocPlugin()
+        ])
     ]
 };
 

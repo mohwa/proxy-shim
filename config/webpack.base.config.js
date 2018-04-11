@@ -28,18 +28,14 @@ const config = {
     context: path.join(__dirname, '..'),
     output: {
         filename: '[name].js',
-        path: buildPath,
-        libraryTarget: 'umd'
+        path: buildPath
     },
     "externals": {},
     module: {
         rules: [
         {
             test: /\.js$/,
-            include: [
-                path.join(srcPath, 'app'),
-                path.join(srcPath, 'test')
-            ],
+            include: [srcPath],
             use: {
                 loader: 'babel-loader',
                 options: {
@@ -47,13 +43,6 @@ const config = {
                     presets: ['es2015'],
                     plugins: ['transform-runtime']
                 }
-            }
-        },
-        {
-            test: /\.html$/,
-            exclude: path.join(srcPath, 'index.html'),
-            use: {
-                loader: 'html-loader'
             }
         }]
     },
