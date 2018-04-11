@@ -268,32 +268,77 @@
 //	    const proxy3 = new Proxy([], {});
 //	    proxy3();
 
-var handler = {
-//    get: function(target, name){
+//var handler = {
+//	set: function(obj, prop, value) {
 //
-////        console.dir(target);
-////        console.dir(name);
-////        console.dir(name in target);
+//		// The default behavior to store the value
+//		obj[prop] = value;
 //
-////        console.log(name in target);
-//        return name in target ? target[name] : 37;
+//		// Indicate success
+//		return true;
+//	}
+//};
+
+//var p = new Proxy({a: 1, b: undefined}, handler);
 //
-////		return 37;
-//    }
+//console.log(p);
+//
+////console.dir(p);
+////p.a = 1;
+////p.c = 3;
+//p.b = 444;
+//p.c = 555;
+//
+//console.log('a:', p.a, ',b:', p.b); // 1, undefined
+//console.log(p.c); // false, 3
+
+
+//
+//var o = Proxy.revocable({a: 1, b: undefined}, handler);
+//
+////o.proxy = proxy;
+//
+//window.xxx = o.proxy;
+//
+////console.log('a:', proxy.a, ',b:', proxy.b); // 1, undefined
+//
+//console.log(o.proxy);
+////
+//o.revoke();
+//
+//console.log(o.proxy);
+//console.log(o.proxy['[[IsRevoked]]'])
+
+function sum(a, b) {
+  return a + b;
+}
+
+const handler = {
+  apply: function(target, thisArg, argumentsList) {
+    return target(argumentsList[0], argumentsList[1]) * 10;
+  }
 };
 
-var p = new Proxy({a: 1, b: undefined}, handler);
+var proxy1 = Proxy.revocable(sum, handler);
 
-console.log(p);
+proxy1.revoke();
 
-//console.dir(p);
-//p.a = 1;
-//p.c = 3;
-p.b = 444;
-p.c = 555;
+console.dir(proxy1.proxy);
 
-console.log('a:', p.a, ',b:', p.b); // 1, undefined
-console.log(p.c); // false, 37
+console.log(sum(1, 2));
+// expected output: 3
+console.log(proxy1.proxy(1, 2));
+// expected output: 30
+//console.log(Peter.sex);  // "M"
+//console.log(Peter.name); // "Peter"
+//console.log(Peter.age);  // 13
+//
+//console.log('a:', o.proxy.a, ',b:', o.proxy.b); // 1, undefined
+
+//console.log(o.proxy);
+
+//o.proxy.a = 3;
+
     </script>
 </body>
 </html>

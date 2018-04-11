@@ -7,13 +7,13 @@
  */
 window.Proxy = (() => {
 
-    return !window.Proxy || function __Proxy__(target = {}, handler = {}){
+    function Proxy(target = {}, handler = {}){
 
         if (!target) throw new Error('Not found target argument');
         if (!handler || handler.constructor !== Object) throw new Error('Not found handler argument');
 
         // new 연산자 사용 여부
-        const isNewOperator = this && this.constructor === __Proxy__ ? true : false;
+        const isNewOperator = this && this.constructor === Proxy ? true : false;
 
         // new 연산자를 사용하지 않았을 경우
         if (!isNewOperator) throw new Error(`Class constructor Proxy cannot be invoked without 'new'`);
@@ -36,9 +36,15 @@ window.Proxy = (() => {
                 if (this && this.constructor === proxy) isNewOperator = true;
 
                 if (isNewOperator && _construct){
+
+                    _checkRevoke(proxy, 'construct');
+
                     return _construct.call(handler, target, args);
                 }
                 else if (!isNewOperator && _apply){
+
+                    _checkRevoke(proxy, 'apply');
+
                     return _apply.call(handler, target, this, args);
                 }
 
@@ -55,14 +61,16 @@ window.Proxy = (() => {
 
         // getter / setter 함수 생성
         let getter = _get ? function(k){
-        return _get.apply(this, [target, k, proxy]);
+
+            return _get.apply(this, [target, k, proxy]);
 
         } : function(k){
             return this[k];
         };
 
         let setter = _set ? function(k, v){
-        return _set.apply(this, [target, k, v]);
+
+            return _set.apply(this, [target, k, v]);
 
         } : function(k, v){
             this[k] = v;
@@ -88,8 +96,18 @@ window.Proxy = (() => {
             const v = target[k];
 
             const disc = {
-                get: () => { return getter.apply(getThis, [getKey]); },
-                set: (v) => { return setter.apply(setThis, [setKey, v]); }
+                get: () => {
+
+                    _checkRevoke(proxy, 'get');
+
+                    return getter.apply(getThis, [getKey]);
+                },
+                set: (v) => {
+
+                    _checkRevoke(proxy, 'set');
+
+                    return setter.apply(setThis, [setKey, v]);
+                }
             };
 
             Object.defineProperty(proxy, k, disc);
@@ -98,7 +116,32 @@ window.Proxy = (() => {
         });
 
         return proxy;
+    }
+
+    /**
+     * 생성된 proxy 를 소멸시킬 수 있는 static 메서드
+     *
+     * @param target
+     * @param handler
+     * @returns {{}}
+     */
+    Proxy.revocable = function(target = {}, handler = {}){
+
+        let proxy = new Proxy(target, handler);
+        const o = {};
+
+        const revoke = () => {
+            o.proxy.IsRevoked = true;
+        };
+
+        o.proxy = proxy;
+        o.revoke = revoke;
+
+        return o;
     };
+
+
+    return window.Proxy || Proxy;
 
 })();
 
@@ -112,6 +155,17 @@ window.Proxy = (() => {
  */
 function _replaceKeyName(k = ''){
     return `__${k}__`;
+}
+
+/**
+ * revoke 상태를위한, 예외처리
+ *
+ * @param proxy
+ * @param trap
+ * @private
+ */
+function _checkRevoke(proxy = null, trap = ''){
+    if (proxy && proxy.IsRevoked) throw new Error(`Cannot perform '${trap}' on a proxy that has been revoked`);
 }
 
 
