@@ -15,7 +15,7 @@
     "name": "mohwa",
     "email": "yanione2@gmail.com"
   },
-  "main": "index.js",
+  "main": "dist/proxy-shim.js",
   "dependencies": {
     "babel-core": "6.26.0",
     "babel-loader": "7.1.2",

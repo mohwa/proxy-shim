@@ -1,10 +1,6 @@
 {
     "source": {
     	"include": [
-    	    "./src/lib/bx-ui/app",
-    	    "./src/lib/bx-ui/app/components",
-    	    "./src/lib/bx-ui/app/components/fileUpload",
-    	    "./src/lib/bx-ui/app/components/input"
         ]
     },
     "opts": {

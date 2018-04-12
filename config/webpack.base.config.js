@@ -30,7 +30,6 @@ const config = {
         filename: '[name].js',
         path: buildPath
     },
-    "externals": {},
     module: {
         rules: [
         {

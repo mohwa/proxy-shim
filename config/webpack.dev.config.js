@@ -29,10 +29,8 @@ const config = {
         "proxy-shim": entry
     },
     devServer: {
-        contentBase: buildPath,
         host: 'localhost',
         port: '8088',
-        proxy: {},
         open: true
     },
     plugins: [

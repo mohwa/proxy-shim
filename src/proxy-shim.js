@@ -5,7 +5,17 @@
 /**
  * Proxy 생성자 함수
  */
-window.Proxy = (() => {
+
+((global, factory) => {
+
+	if (typeof module === 'object' && typeof module.exports === 'object'){
+        module.exports = global.Proxy || factory(global);
+	}
+	else{
+		factory(global, true);
+	}
+
+})(typeof window !== 'undefined' ? window : this, function(window = null, isGlobal = false){
 
     function Proxy(target = {}, handler = {}){
 
@@ -132,46 +142,45 @@ window.Proxy = (() => {
     Proxy.revocable = function(target = {}, handler = {}){
 
         let proxy = new Proxy(target, handler);
-        const o = {};
 
         const revoke = () => {
-            o.proxy.IsRevoked = true;
+            proxy.IsRevoked = true;
         };
 
-        o.proxy = proxy;
-        o.revoke = revoke;
-
-        return o;
+        return {
+            proxy,
+            revoke
+        };
     };
 
+    /**
+     *
+     * get/set 접근자를 위한, key 반환
+     *
+     * @param k
+     * @returns {*}
+     * @private
+     */
+    function _replaceKeyName(k = ''){
+        return `__${k}__`;
+    }
 
-    return !window.Proxy || Proxy;
+    /**
+     * revoke 상태를위한, 예외처리
+     *
+     * @param proxy
+     * @param trap
+     * @private
+     */
+    function _checkRevoke(proxy = null, trap = ''){
+        if (proxy && proxy.IsRevoked) throw new Error(`Cannot perform '${trap}' on a proxy that has been revoked`);
+    }
 
-})();
+    // global 설정
+    if (isGlobal){
+        window.Proxy = window.Proxy || Proxy;
+    }
 
-/**
- *
- * get/set 접근자를 위한, key 반환
- *
- * @param k
- * @returns {*}
- * @private
- */
-function _replaceKeyName(k = ''){
-    return `__${k}__`;
-}
+    return Proxy;
 
-/**
- * revoke 상태를위한, 예외처리
- *
- * @param proxy
- * @param trap
- * @private
- */
-function _checkRevoke(proxy = null, trap = ''){
-    if (proxy && proxy.IsRevoked) throw new Error(`Cannot perform '${trap}' on a proxy that has been revoked`);
-}
-
-
-module.exports = Proxy;
-  
+});
