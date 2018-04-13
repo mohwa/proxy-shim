@@ -28,8 +28,11 @@ const config = {
     context: path.join(__dirname, '..'),
     output: {
         filename: '[name].js',
-        path: buildPath
+        libraryTarget: 'umd',
+        path: buildPath,
+        library: 'ProxyPolyFill'
     },
+    "externals": {},
     module: {
         rules: [
         {
@@ -55,9 +58,7 @@ const config = {
         extensions: ['.js']
     },
     plugins: [
-        new CleanWebpackPlugin(
-            buildPath, {root: rootPath, verbose: true, watch: false}
-        )
+        new CleanWebpackPlugin(buildPath, {root: rootPath, verbose: true, watch: false})
     ]
 };
 

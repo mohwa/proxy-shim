@@ -15,7 +15,7 @@
     "name": "mohwa",
     "email": "yanione2@gmail.com"
   },
-  "main": "dist/proxy-shim.js",
+  "main": "index.js",
   "dependencies": {
     "babel-core": "6.26.0",
     "babel-loader": "7.1.2",
@@ -24,7 +24,6 @@
     "bundle-loader": "0.5.5",
     "clean-webpack-plugin": "^0.1.18",
     "copy-webpack-plugin": "^4.5.0",
-    "glob": "7.0.3",
     "jsdoc": "latest",
     "uglifyjs-webpack-plugin": "^1.2.2",
     "webpack": "^3.10.0",
@@ -32,7 +31,8 @@
   },
   "devDependencies": {
     "html-webpack-plugin": "^2.30.1",
-    "webpack-dev-server": "^2.11.1"
+    "webpack-dev-server": "^2.11.1",
+    "write-file-webpack-plugin": "^4.2.0"
   },
   "scripts": {
     "start": "./node_modules/.bin/webpack-dev-server --env=dev --config ./config/webpack.config.js",

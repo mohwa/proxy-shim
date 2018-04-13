@@ -11,13 +11,16 @@ const glob = require('glob');
 const webpack = require('webpack');
 
 const {Config, environment} = require('webpack-config');
+
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-//const JSDocPlugin = require('./plugins/jsDocPlugin');
 
 const envConfig = environment.get('config');
 
 const rootPath = path.join(__dirname, '..');
+
 const srcPath = path.join(rootPath, 'src');
+const buildPath = path.join(rootPath, 'dist');
 
 const entry = path.join(srcPath, 'proxy-shim');
 

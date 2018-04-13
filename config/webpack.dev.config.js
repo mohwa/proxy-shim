@@ -14,8 +14,7 @@ const envConfig = environment.get('config');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-
-//const JSDocPlugin = require('./plugins/jsDocPlugin');
+const WriteFilePlugin = require('write-file-webpack-plugin');
 
 const rootPath = path.join(__dirname, '..');
 
@@ -23,9 +22,11 @@ const srcPath = path.join(rootPath, 'src');
 const buildPath = path.join(rootPath, 'dist');
 
 const entry = path.join(srcPath, 'proxy-shim');
+const testEntry = path.join(rootPath, 'test/index.js');
 
 const config = {
     entry: {
+        "index": testEntry,
         "proxy-shim": entry
     },
     devServer: {
@@ -34,14 +35,11 @@ const config = {
         open: true
     },
     plugins: [
+        new WriteFilePlugin(),
         new HtmlWebpackPlugin({
             hash: true,
-            inject: 'head',
-            template: path.join(srcPath, 'index.html')
-        }),
-        new CopyWebpackPlugin([
-            {context: srcPath, from: `${path.join(srcPath, 'test/**/*')}`, ignore: ['*.js']}
-        ])
+            template: path.join(rootPath, 'test/index.html')
+        })
     ]
 };
 
