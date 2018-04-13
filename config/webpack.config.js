@@ -1,9 +1,8 @@
 /**
- * Created by sgjeon on 16. 4. 5..
+ * Created by mohwa on 2018. 2. 14..
  */
 
 const path = require('path');
-const _ = require('lodash');
 
 const {Config, environment} = require('webpack-config');
 

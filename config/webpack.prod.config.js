@@ -1,12 +1,9 @@
 /**
- * Created by UI/UX Team on 2018. 2. 14..
+ * Created by mohwa on 2018. 2. 14..
  */
 
 const path = require('path');
 const fs = require('fs');
-
-const _ = require('lodash');
-const glob = require('glob');
 
 const webpack = require('webpack');
 

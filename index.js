@@ -1,3 +1,6 @@
+/**
+ * Created by mohwa on 2018. 2. 14..
+ */
 
 let ProxyPolyFill = null;
 

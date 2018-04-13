@@ -1,11 +1,8 @@
 /**
- * Created by UI/UX Team on 2018. 2. 14..
+ * Created by mohwa on 2018. 2. 14..
  */
 
 const path = require('path');
-
-const _ = require('lodash');
-const glob = require('glob');
 
 const webpack = require('webpack');
 
@@ -37,7 +34,7 @@ const config = {
         rules: [
         {
             test: /\.js$/,
-            include: [srcPath],
+            include: srcPath,
             use: {
                 loader: 'babel-loader',
                 options: {

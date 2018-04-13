@@ -1,6 +1,6 @@
 {
   "name": "proxy-shim",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "proxy-shim",
   "keywords": [
     "es6",
@@ -24,7 +24,6 @@
     "bundle-loader": "0.5.5",
     "clean-webpack-plugin": "^0.1.18",
     "copy-webpack-plugin": "^4.5.0",
-    "jsdoc": "latest",
     "uglifyjs-webpack-plugin": "^1.2.2",
     "webpack": "^3.10.0",
     "webpack-config": "7.5.0"
