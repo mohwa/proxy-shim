@@ -29,7 +29,6 @@ const config = {
         path: buildPath,
         library: 'ProxyShim'
     },
-    "externals": {},
     module: {
         rules: [
         {

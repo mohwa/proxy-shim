@@ -2,10 +2,10 @@
  * Created by mohwa on 2018. 2. 14..
  */
 
-let ProxyPolyFill = null;
+let ProxyShim = null;
 
-try{ ProxyPolyFill = require('./dist/proxy-shim'); }
-catch(e){ ProxyPolyFill = require('./src/proxy-shim'); }
+try{ ProxyShim = require('./dist/proxy-shim'); }
+catch(e){ ProxyShim = require('./src/proxy-shim'); }
 
-module.exports = ProxyPolyFill;
+module.exports = ProxyShim;
   
