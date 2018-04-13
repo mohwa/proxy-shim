@@ -1,18 +1,18 @@
 
 /**
- * ProxyPolyFill 생성자 함수
+ * ProxyShim 생성자 함수
  */
 
-function ProxyPolyFill(target = {}, handler = {}){
+function ProxyShim(target = {}, handler = {}){
 
     if (!target) throw new Error('Not found target argument');
     if (!handler || handler.constructor !== Object) throw new Error('Not found handler argument');
 
     // new 연산자 사용 여부
-    const isNewOperator = this && this.constructor === Proxy ? true : false;
+    const isNewOperator = this && this.constructor === ProxyShim ? true : false;
 
     // new 연산자를 사용하지 않았을 경우
-    if (!isNewOperator) throw new Error(`Class constructor Proxy cannot be invoked without 'new'`);
+    if (!isNewOperator) throw new Error(`Class constructor ProxyShim cannot be invoked without 'new'`);
 
     let proxy = this;
 
@@ -125,9 +125,9 @@ function ProxyPolyFill(target = {}, handler = {}){
  * @param handler
  * @returns {{}}
  */
-ProxyPolyFill.revocable = function(target = {}, handler = {}){
+ProxyShim.revocable = function(target = {}, handler = {}){
 
-    let proxy = new Proxy(target, handler);
+    let proxy = new ProxyShim(target, handler);
 
     const revoke = () => {
         proxy.IsRevoked = true;
@@ -162,6 +162,6 @@ function _checkRevoke(proxy = null, trap = ''){
     if (proxy && proxy.IsRevoked) throw new Error(`Cannot perform '${trap}' on a proxy that has been revoked`);
 }
 
-module.exports = ProxyPolyFill;
+module.exports = ProxyShim;
 
 

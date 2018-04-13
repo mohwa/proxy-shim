@@ -30,7 +30,7 @@ const config = {
         filename: '[name].js',
         libraryTarget: 'umd',
         path: buildPath,
-        library: 'ProxyPolyFill'
+        library: 'ProxyShim'
     },
     "externals": {},
     module: {
