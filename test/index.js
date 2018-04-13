@@ -5,6 +5,19 @@
 
 const ProxyShim = require('proxy-shim');
 
-console.log(Proxy);
-console.log(ProxyShim);
+var revocable = ProxyShim.revocable({foo: function(){}}, {
+  get: function(target, name) {
+    return "[[" + name + "]]";
+  }
+});
+
+var proxy = revocable.proxy;
+
+console.log(proxy.foo); // "[[foo]]"
+
+revocable.revoke();
+
+console.log(proxy.foo); // TypeError is thrown
+proxy.foo = 1;           // TypeError again
+
   
