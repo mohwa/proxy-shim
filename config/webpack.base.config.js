@@ -14,6 +14,7 @@ const rootPath = path.join(__dirname, '..');
 
 const buildPath = path.join(rootPath, 'dist');
 const srcPath = path.join(rootPath, 'src');
+const testPath = path.join(rootPath, 'test');
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
@@ -33,7 +34,7 @@ const config = {
         rules: [
         {
             test: /\.js$/,
-            include: srcPath,
+            include: [srcPath, testPath],
             use: {
                 loader: 'babel-loader',
                 options: {

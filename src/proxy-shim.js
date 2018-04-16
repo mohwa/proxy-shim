@@ -3,6 +3,8 @@
  * ProxyShim 생성자 함수
  */
 
+const TARGETS = {};
+
 function ProxyShim(target = {}, handler = {}){
 
     if (!target) throw new Error('Not found target argument');
@@ -20,11 +22,10 @@ function ProxyShim(target = {}, handler = {}){
 
     let isFunction = false;
 
-
     // target 이 함수일 경우
     if (typeof target === 'function'){
 
-        proxy = function _(...args){
+        proxy = function(...args){
 
             // 반환된 함수의 new 연산자 사용 여부
             let isNewOperator = false;
@@ -51,22 +52,36 @@ function ProxyShim(target = {}, handler = {}){
             return target.apply(this, args);
         };
 
+        proxy.constructor = target.constructor;
+        proxy.prototype = target.prototype;
+
         isFunction = true;
 
     }
+
+    // target 속성값이 초기값에서 변경되었는지 여부
+    TARGETS[target] = { __isChanged__: false };
 
     // getter / setter 함수 생성
     let getter = _get ? function(k){
 
         return _get.apply(this, [target, k, proxy]);
 
-    } : function(k){
-        return this[k];
+    } : function(k, v){
+
+        let _v = this[k];
+
+        if (!TARGETS[target].__isChanged__){
+
+            _v = _v || v;
+        }
+
+        return _v;
     };
 
     let setter = _set ? function(k, v){
 
-        return _set.apply(this, [target, k, v]);
+        return _set.apply(this, [target, k, v, proxy]);
 
     } : function(k, v){
         this[k] = v;
@@ -96,26 +111,26 @@ function ProxyShim(target = {}, handler = {}){
 
                 _checkRevoke(proxy, 'get');
 
-                return getter.apply(getThis, [getKey]);
+                return getter.apply(getThis, [getKey, v]);
             },
             set: (v) => {
 
                 _checkRevoke(proxy, 'set');
+
+                TARGETS[target].__isChanged__ = true;
 
                 return setter.apply(setThis, [setKey, v]);
             }
         };
 
         Object.defineProperty(proxy, k, disc);
-
-        proxy[k] = v;
     });
 
     proxy.IsRevoked = false;
 
     // target, proxy 객체 속성을 추가할 수 없도록 프리징시킨다.
     Object.seal(target);
-    Object.seal(proxy);
+    //Object.seal(proxy);
 
     return proxy;
 }
