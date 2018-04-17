@@ -5,19 +5,18 @@
 
 const ProxyShim = require('proxy-shim');
 
-var revocable = ProxyShim.revocable({foo: function(){}}, {
-  get: function(target, name) {
-    return "[[" + name + "]]";
+function monster1(disposition) {
+  this.disposition = disposition;
+}
+
+const handler1 = {
+  construct(target, args) {
+
+    console.log('monster1 constructor called'); // expected output: "monster1 constructor called"
+    return new target(...args);
   }
-});
+};
 
-var proxy = revocable.proxy;
+const proxy1 = new ProxyShim(monster1, handler1);
 
-console.log(proxy.foo); // "[[foo]]"
-
-revocable.revoke();
-
-console.log(proxy.foo); // TypeError is thrown
-proxy.foo = 1;           // TypeError again
-
-  
+console.log(new proxy1('fierce').disposition); // expected output: "fierce"
